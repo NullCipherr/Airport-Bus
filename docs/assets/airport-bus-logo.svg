@@ -1,0 +1,6 @@
+<svg width="420" height="140" viewBox="0 0 420 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="420" height="140" rx="16" fill="#0B1F3A"/>
+  <path d="M60 100L90 40L120 100H108L100 84H80L72 100H60ZM84 74H96L90 62L84 74Z" fill="#2DD4BF"/>
+  <text x="145" y="60" fill="#F8FAFC" font-family="Arial, sans-serif" font-size="28" font-weight="700">Airport Bus</text>
+  <text x="145" y="88" fill="#94A3B8" font-family="Arial, sans-serif" font-size="15">Airport Operations Platform</text>
+</svg>
