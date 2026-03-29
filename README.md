@@ -192,6 +192,10 @@ docker compose down
 
 ## Licença
 
-Projeto open source sob licença **MIT**.
+Copyright (c) 2026 **Andrei Costa**.
+Todos os direitos reservados.
 
-Consulte `LICENSE` quando o arquivo for incluído no repositório.
+Este projeto é **proprietário e confidencial**.
+Não é permitida cópia, distribuição, modificação ou uso sem autorização prévia por escrito.
+
+Consulte [`LICENSE`](LICENSE) para os termos completos.
