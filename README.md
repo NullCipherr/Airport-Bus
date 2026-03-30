@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="docs/assets/airport-bus-logo.svg" alt="Logo do Airport Bus" width="240" />
+  <img src="docs/assets/airport-bus-logo.svg" alt="Airport Bus Logo" width="240" />
   <h1>Airport Bus</h1>
-  <p><i>Plataforma de operação aeroportuária em tempo real com API Phoenix, eventos via Channels e console web em Vue 3</i></p>
+  <p><i>Real-time airport operations platform with Phoenix API, Channels-based events, and a Vue 3 web console</i></p>
 
   <p>
     <img src="https://img.shields.io/badge/Elixir-1.16+-4B275F?style=flat-square&logo=elixir&logoColor=white" alt="Elixir" />
@@ -14,12 +14,12 @@
 
 ---
 
-## Documentação
+## Documentation
 
-A documentação técnica foi organizada em módulos para facilitar onboarding, operação e manutenção.
-Inglês é a referência principal; traduções em português estão em `docs/pt-br/`.
+Technical documentation is organized into modules for easier onboarding, operations, and maintenance.
+English is the primary language; Portuguese translations are available under `docs/pt-br/`.
 
-- [Índice da documentação](docs/README.md)
+- [Documentation index](docs/README.md)
 - [Architecture](docs/en/ARCHITECTURE.md)
 - [API](docs/en/API.md)
 - [Operations](docs/en/OPERATIONS.md)
@@ -32,103 +32,103 @@ Inglês é a referência principal; traduções em português estão em `docs/pt
 
 ## Preview
 
-Interface web servida pelo frontend:
+Web interface served by the frontend:
 
-- Frontend local: `http://localhost:5173`
-- API local: `http://localhost:4000/api`
+- Local frontend: `http://localhost:5173`
+- Local API: `http://localhost:4000/api`
 
 ---
 
 ## Overview
 
-O **Airport Bus** é uma plataforma para centralizar operações aeroportuárias críticas com foco em tempo real.
+**Airport Bus** centralizes critical airport operations with a real-time-first approach.
 
-O projeto prioriza:
+Project priorities:
 
-- API stateless com autenticação por token assinado;
-- regras de domínio centralizadas em contexto de negócio (`Ops`);
-- atualização de telas por eventos em tempo real via Phoenix Channels;
-- stack simples para rodar localmente, em Docker e evoluir com segurança.
+- stateless API authentication using signed tokens;
+- domain rules centralized in the `Ops` context;
+- UI updates driven by real-time events via Phoenix Channels;
+- a simple stack for local development, Docker execution, and safe incremental evolution.
 
 ---
 
 ## Features
 
-- **Autenticação de operadores** via `POST /api/auth/login`.
-- **Painel consolidado** com visão operacional (`GET /api/dashboard/overview`).
-- **CRUD completo** para voos, equipes, colaboradores, gates, esteiras e escalas.
-- **Eventos em tempo real** no tópico `ops:lobby` para atualização sem refresh.
-- **Simulações operacionais** de atraso e realocação.
-- **Carga massiva e tempestade de eventos** para testes de estresse funcional.
-- **Automação de validação** com geração de relatório em `docs/reports/`.
+- **Operator authentication** via `POST /api/auth/login`.
+- **Consolidated dashboard** through `GET /api/dashboard/overview`.
+- **Full CRUD** for flights, teams, employees, gates, belts, and schedules.
+- **Real-time events** on the `ops:lobby` topic for no-refresh updates.
+- **Operational simulations** for delays and reallocations.
+- **Massive seed and event storm** endpoints for functional stress testing.
+- **Validation automation** with report generation in `docs/reports/`.
 
 ---
 
-## Arquitetura
+## Architecture
 
-Fluxo principal de requisição:
+Main request flow:
 
-1. Frontend autentica em `POST /api/auth/login`.
-2. Backend valida credenciais e emite token assinado (`Phoenix.Token`).
-3. Rotas privadas passam pelo plug `RequireAuth`.
-4. Controllers delegam regras para `AeroSyncOps.Ops`.
-5. `AeroSyncOps.Ops.EventDispatcher` publica eventos no `ops:lobby`.
-6. Frontend inscrito no channel recebe updates e sincroniza a interface.
+1. Frontend authenticates using `POST /api/auth/login`.
+2. Backend validates credentials and issues a signed token (`Phoenix.Token`).
+3. Private routes are protected by the `RequireAuth` plug.
+4. Controllers delegate business rules to `AeroSyncOps.Ops`.
+5. `AeroSyncOps.Ops.EventDispatcher` publishes events to `ops:lobby`.
+6. Channel subscribers receive updates and sync the UI without refresh.
 
 ---
 
-## Resultado Oficial de Testes Automatizados
+## Official Automated Test Results
 
-Referência local antes de publicação:
+Reference local run before publication:
 
-- Data: `2026-03-29` (America/Sao_Paulo)
-- Execução: `2026-03-29T00:58:30-03:00`
+- Date: `2026-03-29` (America/Sao_Paulo)
+- Execution: `2026-03-29T00:58:30-03:00`
 - Script: `scripts/run_tests.sh`
-- Artefatos:
+- Artifacts:
   - `docs/reports/latest_test_report.md`
   - `docs/reports/latest_test_report.raw.log`
 
-| Etapa | Status | Duração |
+| Stage | Status | Duration |
 | --- | --- | ---: |
-| Testes backend (`mix test`) | ok | 2731 ms |
-| Build backend produção (`MIX_ENV=prod mix compile`) | ok | 28125 ms |
-| Build frontend (`npm run build`) | ok | 2545 ms |
+| Backend tests (`mix test`) | ok | 2731 ms |
+| Backend production build (`MIX_ENV=prod mix compile`) | ok | 28125 ms |
+| Frontend build (`npm run build`) | ok | 2545 ms |
 
 ---
 
-## Decisões Técnicas
+## Technical Decisions
 
-- **Contexto de domínio único (`Ops`)**: reduz regra duplicada em controllers.
-- **Phoenix Channels para realtime**: baixa complexidade inicial com bom ganho operacional.
-- **Validação automatizada por shell**: execução simples, replicável e rastreável por relatório.
-- **Separação backend/frontend**: deploy e manutenção desacoplados.
+- **Single domain context (`Ops`)**: reduces business rule duplication in controllers.
+- **Phoenix Channels for realtime**: low initial complexity with strong operational value.
+- **Shell-based validation pipeline**: simple, reproducible, and report-driven.
+- **Backend/frontend separation**: independent deployment and maintenance.
 
 ---
 
 ## Roadmap
 
-Próximos passos recomendados para maturidade:
+Recommended next steps for project maturity:
 
-- aumentar cobertura de testes para CRUD e regras críticas;
-- instrumentar Telemetry com exportador de métricas;
-- evoluir observabilidade com histórico de throughput e latência;
-- reforçar estratégia de escala para cenários de eventos simultâneos;
-- formalizar pipeline CI com publicação de artefatos de teste.
+- increase test coverage for CRUD endpoints and critical domain rules;
+- add Telemetry instrumentation with metrics exporters;
+- evolve observability with historical throughput and latency tracking;
+- harden scaling strategy for simultaneous high-event scenarios;
+- formalize CI pipeline with automated test artifact publication.
 
 ---
 
-## Stack Tecnológica
+## Tech Stack
 
 - **Backend**: Elixir `1.16+` + Phoenix `1.7+` + Ecto
-- **Banco de dados**: PostgreSQL `14+`
-- **Tempo real**: Phoenix Channels
+- **Database**: PostgreSQL `14+`
+- **Realtime**: Phoenix Channels
 - **Frontend**: Vue 3 + Pinia + Vue Router + Vite
-- **Automação**: Shell script (`scripts/run_tests.sh`)
-- **Containerização**: Docker + Docker Compose
+- **Automation**: Shell script (`scripts/run_tests.sh`)
+- **Containerization**: Docker + Docker Compose
 
 ---
 
-## Estrutura do Projeto
+## Project Structure
 
 ```text
 .
@@ -178,15 +178,15 @@ Próximos passos recomendados para maturidade:
 
 ## Getting Started
 
-### Pré-requisitos
+### Prerequisites
 
 - Elixir `>= 1.16`
 - Erlang/OTP `>= 26`
 - PostgreSQL `>= 14`
 - Node `>= 20`
-- Docker 24+ e Docker Compose v2 (opcional)
+- Docker 24+ and Docker Compose v2 (optional)
 
-### Rodando manualmente
+### Run manually
 
 Backend:
 
@@ -205,10 +205,10 @@ npm install
 npm run dev
 ```
 
-### Endpoints principais
+### Main endpoints
 
 - `POST /api/auth/login`
-- `GET /api/health` (autenticado)
+- `GET /api/health` (authenticated)
 - `GET /api/dashboard/overview`
 - `GET /api/dashboard/events`
 - `POST /api/flights/:id/simulate-delay`
@@ -218,20 +218,20 @@ npm run dev
 
 ## Docker Deployment
 
-### Build e subida
+### Build and start
 
 ```bash
 docker compose up --build
 ```
 
-### Operação
+### Operations
 
 ```bash
 docker compose logs -f
 docker compose down
 ```
 
-### Acesso
+### Access
 
 - Frontend: `http://localhost:5173`
 - API: `http://localhost:4000/api`
@@ -239,38 +239,38 @@ docker compose down
 
 ---
 
-## Scripts Principais
+## Main Scripts
 
-- `./scripts/run_tests.sh`: roda validações e atualiza relatório técnico em `docs/reports/`.
-- `SKIP_FRONTEND=1 ./scripts/run_tests.sh`: validação backend-only.
-- `cd backend && mix test`: suíte de testes backend.
-- `cd backend && MIX_ENV=prod mix compile`: valida build de produção backend.
-- `cd frontend && npm run build`: valida build do frontend.
-- `docker compose up --build`: sobe stack containerizada.
+- `./scripts/run_tests.sh`: runs validations and updates technical reports in `docs/reports/`.
+- `SKIP_FRONTEND=1 ./scripts/run_tests.sh`: backend-only validation.
+- `cd backend && mix test`: backend test suite.
+- `cd backend && MIX_ENV=prod mix compile`: backend production build validation.
+- `cd frontend && npm run build`: frontend build validation.
+- `docker compose up --build`: starts the containerized stack.
 
 ---
 
-## Licença
+## License
 
 Copyright (c) 2026 **Andrei Costa**.
-Todos os direitos reservados.
+All rights reserved.
 
-Este projeto é **proprietário e confidencial**.
-Não é permitida cópia, distribuição, modificação ou uso sem autorização prévia por escrito.
+This project is **proprietary and confidential**.
+Copying, distribution, modification, or use is not allowed without prior written authorization.
 
-Veja o arquivo [LICENSE](LICENSE).
+See [LICENSE](LICENSE) for full terms.
 
 ---
 
-## Contribuição
+## Contributing
 
-Contribuições internas são bem-vindas seguindo o fluxo definido em [CONTRIBUTING.md](CONTRIBUTING.md).
+Internal contributions are welcome following the process defined in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-Antes de contribuir, leia também:
+Before contributing, please read:
 
-- [Código de Conduta](CODE_OF_CONDUCT.md)
-- [Política de Segurança](SECURITY.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security Policy](SECURITY.md)
 
 <div align="center">
-  Feito para operação em tempo real com foco em clareza técnica, confiabilidade e evolução incremental.
+  Built for real-time operations with a focus on technical clarity, reliability, and incremental evolution.
 </div>

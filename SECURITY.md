@@ -1,24 +1,24 @@
-# Política de Segurança
+# Security Policy
 
-## Reporte de vulnerabilidades
+## Reporting vulnerabilities
 
-Se você identificar uma vulnerabilidade de segurança, não abra issue pública.
+If you identify a security vulnerability, do not open a public issue.
 
-Envie um relato para: `security@airport-bus.local`.
+Send a report to: `security@airport-bus.local`.
 
-Inclua:
+Please include:
 
-- descrição objetiva da vulnerabilidade;
-- passos de reprodução;
-- impacto estimado;
-- sugestão de mitigação, quando possível.
+- clear vulnerability description;
+- reproduction steps;
+- estimated impact;
+- mitigation suggestion, when possible.
 
-## Tratamento
+## Response timeline
 
-- confirmação de recebimento: até 2 dias úteis;
-- triagem inicial: até 5 dias úteis;
-- plano de correção: conforme severidade.
+- acknowledgment: up to 2 business days;
+- initial triage: up to 5 business days;
+- remediation plan: based on severity.
 
-## Escopo
+## Scope
 
-Esta política cobre backend, frontend, scripts e infraestrutura definida neste repositório.
+This policy covers backend, frontend, scripts, and infrastructure defined in this repository.

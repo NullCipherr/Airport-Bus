@@ -1,8 +1,8 @@
-# Documentação Técnica - Airport Bus
+# Technical Documentation - Airport Bus
 
-Este diretório centraliza a documentação operacional e de engenharia do projeto.
+This directory centralizes operational and engineering documentation for the project.
 
-## Índice (EN)
+## Index (EN)
 
 - [ARCHITECTURE.md](en/ARCHITECTURE.md)
 - [API.md](en/API.md)
@@ -12,7 +12,7 @@ Este diretório centraliza a documentação operacional e de engenharia do proje
 - [METRICS_AUTOMATION.md](en/METRICS_AUTOMATION.md)
 - [ROADMAP.md](en/ROADMAP.md)
 
-## Índice (pt-BR)
+## Index (pt-BR)
 
 - [ARQUITETURA.md](pt-br/ARQUITETURA.md)
 - [API.md](pt-br/API.md)
@@ -22,8 +22,8 @@ Este diretório centraliza a documentação operacional e de engenharia do proje
 - [METRICAS_AUTOMACAO_SHELL.md](pt-br/METRICAS_AUTOMACAO_SHELL.md)
 - [ROADMAP_TECNICO.md](pt-br/ROADMAP_TECNICO.md)
 
-## Convenções
+## Conventions
 
-- Fonte de verdade principal: documentação em inglês (`docs/en`).
-- Traduções em português devem ser mantidas sincronizadas.
-- Toda mudança de API, arquitetura ou operação deve atualizar estes documentos.
+- Primary source of truth: English documentation (`docs/en`).
+- Portuguese translations must be kept in sync.
+- Every API, architecture, or operations change must update these docs.

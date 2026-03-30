@@ -1,30 +1,30 @@
-# Guia de Contribuição
+# Contributing Guide
 
-## Escopo
+## Scope
 
-Este projeto é privado. Contribuições são permitidas apenas para colaboradores autorizados.
+This is a private project. Contributions are allowed only for authorized collaborators.
 
-## Fluxo recomendado
+## Recommended workflow
 
-1. Crie branch a partir de `main` com prefixo de contexto (`feat/`, `fix/`, `docs/`, `refactor/`).
-2. Mantenha commits pequenos, coesos e descritivos.
-3. Atualize documentação sempre que houver mudança de API, arquitetura ou operação.
-4. Execute `./scripts/run_tests.sh` antes de abrir PR.
-5. Abra PR com descrição objetiva do problema, solução e impacto.
+1. Create a branch from `main` with a context prefix (`feat/`, `fix/`, `docs/`, `refactor/`).
+2. Keep commits small, cohesive, and descriptive.
+3. Update documentation whenever API, architecture, or operations change.
+4. Run `./scripts/run_tests.sh` before opening a PR.
+5. Open a PR with a clear summary of problem, solution, and impact.
 
-## Checklist mínimo para PR
+## Minimum PR checklist
 
-- [ ] Mudança validada localmente.
-- [ ] Sem segredos hardcoded em código ou configuração.
-- [ ] Documentação atualizada quando aplicável.
-- [ ] Relatório de testes atualizado em `docs/reports/latest_test_report.md`.
+- [ ] Change validated locally.
+- [ ] No hardcoded secrets in code or configuration.
+- [ ] Documentation updated when applicable.
+- [ ] Test report updated in `docs/reports/latest_test_report.md`.
 
-## Padrões técnicos
+## Technical standards
 
-- Manter regras de domínio no contexto `AeroSyncOps.Ops`.
-- Evitar lógica de negócio em controllers ou componentes visuais.
-- Preservar contratos existentes de API, ou documentar quebra de compatibilidade.
+- Keep domain rules in the `AeroSyncOps.Ops` context.
+- Avoid business logic in controllers or purely visual components.
+- Preserve existing API contracts, or document breaking changes.
 
-## Revisão
+## Review
 
-Toda contribuição deve ser revisada por pelo menos 1 mantenedor antes de merge.
+Every contribution must be reviewed by at least one maintainer before merge.
