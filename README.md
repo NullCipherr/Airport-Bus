@@ -1,77 +1,89 @@
 <div align="center">
-  <img src="docs/assets/airport-bus-logo.svg" alt="Logo do Airport Bus" width="260" />
+  <img src="docs/assets/airport-bus-logo.svg" alt="Logo do Airport Bus" width="240" />
   <h1>Airport Bus</h1>
-  <p><i>Plataforma operacional aeroportuária em tempo real com API Phoenix, eventos via Channels e console Vue 3</i></p>
+  <p><i>Plataforma de operação aeroportuária em tempo real com API Phoenix, eventos via Channels e console web em Vue 3</i></p>
 
   <p>
-    <img src="https://img.shields.io/badge/Elixir-1.16+-4B275F?style=for-the-badge&logo=elixir&logoColor=white" alt="Elixir" />
-    <img src="https://img.shields.io/badge/Phoenix-1.7-FF6F00?style=for-the-badge&logo=phoenixframework&logoColor=white" alt="Phoenix" />
-    <img src="https://img.shields.io/badge/PostgreSQL-14+-336791?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
-    <img src="https://img.shields.io/badge/Vue-3-42B883?style=for-the-badge&logo=vue.js&logoColor=white" alt="Vue 3" />
-    <img src="https://img.shields.io/badge/Vite-7-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+    <img src="https://img.shields.io/badge/Elixir-1.16+-4B275F?style=flat-square&logo=elixir&logoColor=white" alt="Elixir" />
+    <img src="https://img.shields.io/badge/Phoenix-1.7-FF6F00?style=flat-square&logo=phoenixframework&logoColor=white" alt="Phoenix" />
+    <img src="https://img.shields.io/badge/PostgreSQL-14+-336791?style=flat-square&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+    <img src="https://img.shields.io/badge/Vue-3-42B883?style=flat-square&logo=vue.js&logoColor=white" alt="Vue 3" />
+    <img src="https://img.shields.io/badge/Vite-7-646CFF?style=flat-square&logo=vite&logoColor=white" alt="Vite" />
   </p>
 </div>
 
 ---
 
-## Documentação Modular
+## Documentação
 
-A documentação foi organizada por domínio para facilitar onboarding e manutenção:
+A documentação técnica foi organizada em módulos para facilitar onboarding, operação e manutenção.
+Inglês é a referência principal; traduções em português estão em `docs/pt-br/`.
 
-- [docs/README.md](docs/README.md)
-- [docs/ARQUITETURA.md](docs/ARQUITETURA.md)
-- [docs/API.md](docs/API.md)
-- [docs/OPERACAO_DEPLOY_MANUTENCAO.md](docs/OPERACAO_DEPLOY_MANUTENCAO.md)
-- [docs/OBSERVABILIDADE_E_BENCHMARK.md](docs/OBSERVABILIDADE_E_BENCHMARK.md)
-- [docs/TESTES_AUTOMATIZADOS.md](docs/TESTES_AUTOMATIZADOS.md)
-- [docs/METRICAS_AUTOMACAO_SHELL.md](docs/METRICAS_AUTOMACAO_SHELL.md)
-- [docs/ROADMAP_TECNICO.md](docs/ROADMAP_TECNICO.md)
-
----
-
-## Visão Geral
-
-O **Airport Bus** centraliza operação aeroportuária com foco em atualização contínua e tomada de decisão rápida.
-
-Principais objetivos:
-
-- consolidar voos, equipes, recursos de gate/esteira e escalas em uma única plataforma;
-- automatizar regras operacionais críticas (atraso, remanejamento, alertas);
-- entregar monitoramento em tempo real para supervisão operacional.
+- [Índice da documentação](docs/README.md)
+- [Architecture](docs/en/ARCHITECTURE.md)
+- [API](docs/en/API.md)
+- [Operations](docs/en/OPERATIONS.md)
+- [Observability](docs/en/OBSERVABILITY.md)
+- [Testing](docs/en/TESTING.md)
+- [Metrics Automation](docs/en/METRICS_AUTOMATION.md)
+- [Roadmap](docs/en/ROADMAP.md)
 
 ---
 
-## Principais Recursos
+## Preview
 
-- **Autenticação de operadores** com token assinado (`POST /api/auth/login`).
-- **Painel operacional** com visão agregada (`GET /api/dashboard/overview`).
-- **CRUD operacional** para voos, equipes, funcionários, gates, esteiras e escalas.
-- **Simulação de atraso e remanejamento** com propagação em tempo real.
-- **Eventos operacionais** via Phoenix Channels (`ops:lobby`).
-- **Carga massiva de dados** e tempestade de eventos para testes de estresse.
+Interface web servida pelo frontend:
+
+- Frontend local: `http://localhost:5173`
+- API local: `http://localhost:4000/api`
+
+---
+
+## Overview
+
+O **Airport Bus** é uma plataforma para centralizar operações aeroportuárias críticas com foco em tempo real.
+
+O projeto prioriza:
+
+- API stateless com autenticação por token assinado;
+- regras de domínio centralizadas em contexto de negócio (`Ops`);
+- atualização de telas por eventos em tempo real via Phoenix Channels;
+- stack simples para rodar localmente, em Docker e evoluir com segurança.
+
+---
+
+## Features
+
+- **Autenticação de operadores** via `POST /api/auth/login`.
+- **Painel consolidado** com visão operacional (`GET /api/dashboard/overview`).
+- **CRUD completo** para voos, equipes, colaboradores, gates, esteiras e escalas.
+- **Eventos em tempo real** no tópico `ops:lobby` para atualização sem refresh.
+- **Simulações operacionais** de atraso e realocação.
+- **Carga massiva e tempestade de eventos** para testes de estresse funcional.
+- **Automação de validação** com geração de relatório em `docs/reports/`.
 
 ---
 
 ## Arquitetura
 
-Fluxo principal:
+Fluxo principal de requisição:
 
-1. Frontend Vue autentica via `POST /api/auth/login`.
-2. Backend Phoenix valida usuário e emite token assinado.
-3. Requisições autenticadas acessam APIs de operação.
-4. Regras de domínio em `AeroSyncOps.Ops` geram alterações e eventos.
-5. `AeroSyncOps.Ops.EventDispatcher` publica updates em `ops:lobby`.
-6. Frontend recebe eventos e atualiza telas sem refresh.
+1. Frontend autentica em `POST /api/auth/login`.
+2. Backend valida credenciais e emite token assinado (`Phoenix.Token`).
+3. Rotas privadas passam pelo plug `RequireAuth`.
+4. Controllers delegam regras para `AeroSyncOps.Ops`.
+5. `AeroSyncOps.Ops.EventDispatcher` publica eventos no `ops:lobby`.
+6. Frontend inscrito no channel recebe updates e sincroniza a interface.
 
 ---
 
 ## Resultado Oficial de Testes Automatizados
 
-Resultado de referência da automação local antes de publicação:
+Referência local antes de publicação:
 
 - Data: `2026-03-29` (America/Sao_Paulo)
 - Execução: `2026-03-29T00:58:30-03:00`
-- Script: `./scripts/run_tests.sh`
+- Script: `scripts/run_tests.sh`
 - Artefatos:
   - `docs/reports/latest_test_report.md`
   - `docs/reports/latest_test_report.raw.log`
@@ -84,13 +96,35 @@ Resultado de referência da automação local antes de publicação:
 
 ---
 
+## Decisões Técnicas
+
+- **Contexto de domínio único (`Ops`)**: reduz regra duplicada em controllers.
+- **Phoenix Channels para realtime**: baixa complexidade inicial com bom ganho operacional.
+- **Validação automatizada por shell**: execução simples, replicável e rastreável por relatório.
+- **Separação backend/frontend**: deploy e manutenção desacoplados.
+
+---
+
+## Roadmap
+
+Próximos passos recomendados para maturidade:
+
+- aumentar cobertura de testes para CRUD e regras críticas;
+- instrumentar Telemetry com exportador de métricas;
+- evoluir observabilidade com histórico de throughput e latência;
+- reforçar estratégia de escala para cenários de eventos simultâneos;
+- formalizar pipeline CI com publicação de artefatos de teste.
+
+---
+
 ## Stack Tecnológica
 
-- **Backend**: Elixir + Phoenix + Ecto
-- **Banco**: PostgreSQL
+- **Backend**: Elixir `1.16+` + Phoenix `1.7+` + Ecto
+- **Banco de dados**: PostgreSQL `14+`
 - **Tempo real**: Phoenix Channels
 - **Frontend**: Vue 3 + Pinia + Vue Router + Vite
-- **Automação de validação**: shell script (`scripts/run_tests.sh`)
+- **Automação**: Shell script (`scripts/run_tests.sh`)
+- **Containerização**: Docker + Docker Compose
 
 ---
 
@@ -98,22 +132,6 @@ Resultado de referência da automação local antes de publicação:
 
 ```text
 .
-├── docs/
-│   ├── assets/
-│   │   └── airport-bus-logo.svg
-│   ├── reports/
-│   │   ├── latest_test_report.md
-│   │   └── latest_test_report.raw.log
-│   ├── API.md
-│   ├── ARQUITETURA.md
-│   ├── METRICAS_AUTOMACAO_SHELL.md
-│   ├── OBSERVABILIDADE_E_BENCHMARK.md
-│   ├── OPERACAO_DEPLOY_MANUTENCAO.md
-│   ├── README.md
-│   ├── ROADMAP_TECNICO.md
-│   └── TESTES_AUTOMATIZADOS.md
-├── scripts/
-│   └── run_tests.sh
 ├── backend/
 │   ├── config/
 │   ├── lib/
@@ -121,14 +139,44 @@ Resultado de referência da automação local antes de publicação:
 │   └── test/
 ├── frontend/
 │   ├── src/
+│   ├── index.html
 │   └── package.json
+├── scripts/
+│   └── run_tests.sh
+├── docs/
+│   ├── assets/
+│   │   └── airport-bus-logo.svg
+│   ├── en/
+│   │   ├── API.md
+│   │   ├── ARCHITECTURE.md
+│   │   ├── METRICS_AUTOMATION.md
+│   │   ├── OBSERVABILITY.md
+│   │   ├── OPERATIONS.md
+│   │   ├── ROADMAP.md
+│   │   └── TESTING.md
+│   ├── pt-br/
+│   │   ├── API.md
+│   │   ├── ARQUITETURA.md
+│   │   ├── METRICAS_AUTOMACAO_SHELL.md
+│   │   ├── OBSERVABILIDADE_E_BENCHMARK.md
+│   │   ├── OPERACAO_DEPLOY_MANUTENCAO.md
+│   │   ├── ROADMAP_TECNICO.md
+│   │   └── TESTES_AUTOMATIZADOS.md
+│   ├── reports/
+│   │   ├── latest_test_report.md
+│   │   └── latest_test_report.raw.log
+│   └── README.md
 ├── docker-compose.yml
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── SECURITY.md
 └── README.md
 ```
 
 ---
 
-## Como Rodar Localmente
+## Getting Started
 
 ### Pré-requisitos
 
@@ -136,8 +184,11 @@ Resultado de referência da automação local antes de publicação:
 - Erlang/OTP `>= 26`
 - PostgreSQL `>= 14`
 - Node `>= 20`
+- Docker 24+ e Docker Compose v2 (opcional)
 
-### Backend
+### Rodando manualmente
+
+Backend:
 
 ```bash
 cd backend
@@ -146,7 +197,7 @@ mix ecto.setup
 mix phx.server
 ```
 
-### Frontend
+Frontend:
 
 ```bash
 cd frontend
@@ -154,9 +205,18 @@ npm install
 npm run dev
 ```
 
+### Endpoints principais
+
+- `POST /api/auth/login`
+- `GET /api/health` (autenticado)
+- `GET /api/dashboard/overview`
+- `GET /api/dashboard/events`
+- `POST /api/flights/:id/simulate-delay`
+- `POST /api/operations/simulate-reallocation`
+
 ---
 
-## Deploy Local com Docker
+## Docker Deployment
 
 ### Build e subida
 
@@ -173,20 +233,20 @@ docker compose down
 
 ### Acesso
 
-- API: `http://localhost:4000`
 - Frontend: `http://localhost:5173`
-- Health (autenticado): `GET /api/health`
+- API: `http://localhost:4000/api`
+- Postgres: `localhost:5432`
 
 ---
 
 ## Scripts Principais
 
-- `./scripts/run_tests.sh`: valida backend + build checks e gera relatório em `docs/reports`.
+- `./scripts/run_tests.sh`: roda validações e atualiza relatório técnico em `docs/reports/`.
 - `SKIP_FRONTEND=1 ./scripts/run_tests.sh`: validação backend-only.
-- `cd backend && mix test`: executa suíte de testes backend.
+- `cd backend && mix test`: suíte de testes backend.
 - `cd backend && MIX_ENV=prod mix compile`: valida build de produção backend.
 - `cd frontend && npm run build`: valida build do frontend.
-- `docker compose up --build`: sobe stack local containerizada.
+- `docker compose up --build`: sobe stack containerizada.
 
 ---
 
@@ -198,4 +258,19 @@ Todos os direitos reservados.
 Este projeto é **proprietário e confidencial**.
 Não é permitida cópia, distribuição, modificação ou uso sem autorização prévia por escrito.
 
-Consulte [`LICENSE`](LICENSE) para os termos completos.
+Veja o arquivo [LICENSE](LICENSE).
+
+---
+
+## Contribuição
+
+Contribuições internas são bem-vindas seguindo o fluxo definido em [CONTRIBUTING.md](CONTRIBUTING.md).
+
+Antes de contribuir, leia também:
+
+- [Código de Conduta](CODE_OF_CONDUCT.md)
+- [Política de Segurança](SECURITY.md)
+
+<div align="center">
+  Feito para operação em tempo real com foco em clareza técnica, confiabilidade e evolução incremental.
+</div>
